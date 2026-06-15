@@ -59,7 +59,7 @@ export default function LoginPage() {
           <div className="mt-24 mb-4">
             <p className="text-sm md:text-base font-medium opacity-90 leading-snug">
               Welcome to <br />
-              <span className="font-bold text-lg md:text-xl">QuizzDot Community</span>
+              <span className="font-bold text-lg md:text-xl">QuizzDot Community.</span>
             </p>
           </div>
         </div>
@@ -90,11 +90,25 @@ export default function LoginPage() {
                   <Input
                     id="username"
                     type="text"
-                    placeholder="e.g., John Doe"
+                    placeholder="Enter Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     className="h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all"
                     autoFocus
+                    autoComplete="off"
+                    maxLength={30}
+                  />
+                </div>
+
+                 <div className="space-y-2">
+                  <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Enter password"
+                    className="h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all"
                     autoComplete="off"
                     maxLength={30}
                   />
