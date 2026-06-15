@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";  
 import { Label } from "@/components/ui/label";
 import { ArrowRight } from "lucide-react";
+import { FloatingGraphics } from "@/components/FloatingGraphics";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -42,6 +43,8 @@ export default function LoginPage() {
           <div className="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full blur-3xl"></div>
         </div>
 
+        <FloatingGraphics />
+
         <div className="relative z-10 flex flex-col h-full w-full">
           <div className="flex items-center gap-3">
             <img 
@@ -59,7 +62,7 @@ export default function LoginPage() {
           <div className="mt-24 mb-4">
             <p className="text-sm md:text-base font-medium opacity-90 leading-snug">
               Welcome to <br />
-              <span className="font-bold text-lg md:text-xl">QuizzDot Community.</span>
+              <span className="font-bold text-lg md:text-xl">QuizDot Community.</span>
             </p>
           </div>
         </div>
