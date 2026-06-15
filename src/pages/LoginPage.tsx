@@ -1,31 +1,56 @@
-import { useState, useCallback, type FormEvent } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";  
 import { Label } from "@/components/ui/label";
-import { ArrowRight } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { FloatingGraphics } from "@/components/FloatingGraphics";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = useCallback(
-    (e: FormEvent) => {
-      e.preventDefault();
-      if (!username.trim()) return;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
 
+  const onSubmit = async (data: LoginFormValues) => {
+    setIsLoading(true);
+    try {
+      await login(data.username.trim(), data.password);
+      
       setIsAnimating(true);
       setTimeout(() => {
-        login(username.trim());
         navigate("/setup");
       }, 300);
-    },
-    [username, login, navigate]
-  );
+    } catch (err: any) {
+      toast.error(err.message || "Failed to login");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background" id="login-page">
@@ -85,7 +110,7 @@ export default function LoginPage() {
             </div>
 
             <div className="mt-4">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="username" className="text-sm font-semibold text-gray-700">
                     Username
@@ -94,37 +119,71 @@ export default function LoginPage() {
                     id="username"
                     type="text"
                     placeholder="Enter Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all"
+                    {...register("username")}
+                    className={`h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all ${
+                      errors.username ? "border-red-500" : ""
+                    }`}
                     autoFocus
                     autoComplete="off"
                     maxLength={30}
                   />
+                  {errors.username && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.username.message}
+                    </p>
+                  )}
                 </div>
 
-                 <div className="space-y-2">
+                <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
                     Password
                   </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="Enter password"
-                    className="h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all"
-                    autoComplete="off"
-                    maxLength={30}
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter password"
+                      {...register("password")}
+                      className={`h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all pr-10 ${
+                        errors.password ? "border-red-500" : ""
+                      }`}
+                      autoComplete="off"
+                      maxLength={30}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
 
                 <Button
                   type="submit"
-                  disabled={!username.trim()}
+                  disabled={isLoading}
                   className="w-full h-12 text-base font-bold bg-[#47d394] hover:bg-[#3bb57d] text-white shadow-lg shadow-[#47d394]/25 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:shadow-none disabled:hover:translate-y-0"
                   id="login-button"
                 >
-                  Start Playing
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    </>
+                  ) : (
+                    <>
+                      Start Playing
+                    </>
+                  )}
                 </Button>
               </form>
               <p className="text-center text-xs text-muted-foreground mt-8">
