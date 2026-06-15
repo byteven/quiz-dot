@@ -1,0 +1,266 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+:root {
+  --radius: 0.625rem;
+  --background: oklch(99.31% 0.00351 248.593);
+  --foreground: oklch(14.504% 0.02027 244.358 / 0.854);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0.02 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0.02 240);
+  --primary: #6366f1;
+  --content-primary: oklch(35.165% 0.01498 264.389);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.95 0.02 240);
+  --secondary-foreground: oklch(20.364% 0.01936 242.288 / 0.847);
+  --muted: oklch(97.097% 0.00596 240.377);
+  --muted-foreground: oklch(0.52 0.02 240);
+  --accent: oklch(98.714% 0.00351 248.588);
+  --accent-foreground: oklch(0.145 0.02 240);
+  --destructive: #ee2c1e;
+  --destructive-foreground: oklch(95.412% 0.02291 13.989);
+  --border: oklch(0.9 0.01 240);
+  --input: oklch(0.92 0.01 240);
+  --ring: oklch(0.62 0.15 250);
+  --chart-1: oklch(0.62 0.15 250);
+  --chart-2: oklch(0.65 0.14 200);
+  --chart-3: oklch(0.55 0.12 260);
+  --chart-4: oklch(0.7 0.13 180);
+  --chart-5: oklch(0.6 0.11 230);
+
+  /* Font Families */
+  --font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Inter", "SF Pro Display", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-content-primary: var(--content-primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --animate-dialog-overlay-show: dialogOverlayShow 300ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-hide: hide 200ms ease-out;
+
+  @keyframes dialogOverlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes hide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+/* ─── Quiz App Animations ─────────────────────────────── */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes toast-slide-in-from-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out-to-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animate-toast-slide-in-top {
+  animation: toast-slide-in-from-top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-toast-slide-out-top {
+  animation: toast-slide-out-to-top 0.2s ease-in;
+}
+
+/* ─── Base Styles ──────────────────────────────────────── */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--font-normal);
+    line-height: var(--leading-normal);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-semibold);
+    line-height: var(--leading-tight);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-bold);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  h4 {
+    font-size: var(--text-lg);
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  code,
+  pre,
+  kbd,
+  samp {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Hide Scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
