@@ -23,7 +23,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -54,7 +53,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background" id="login-page">
-      <div className="md:w-1/2 bg-[#47d394] p-8 md:p-12 flex flex-col text-white relative overflow-hidden min-h-[40vh]">
+      <div className="md:w-1/2 bg-primary p-8 md:p-12 flex flex-col text-primary-foreground relative overflow-hidden min-h-[40vh]">
         <div 
           className="absolute inset-0 opacity-20 pointer-events-none" 
           style={{ 
@@ -102,7 +101,7 @@ export default function LoginPage() {
           <div className="bg-white" id="login-card">
             <div className="text-center pb-2 mt-2">
               <div className="flex items-center justify-center gap-2 mb-1">
-                <h2 className="text-2xl font-bold text-gray-800">Welcome Back!</h2>
+                <h2 className="text-2xl font-bold text-foreground">Welcome Back!</h2>
               </div>
               <p className="text-sm text-muted-foreground mt-1">
                 Please Login to Begin the Next Quest!
@@ -112,58 +111,39 @@ export default function LoginPage() {
             <div className="mt-4">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="username" className="text-sm font-semibold text-gray-700">
-                    Username
-                  </Label>
                   <Input
                     id="username"
                     type="text"
+                    label="Username"
+                    withAsterisk
                     placeholder="Enter Username"
                     {...register("username")}
-                    className={`h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all ${
-                      errors.username ? "border-red-500" : ""
-                    }`}
+                    aria-invalid={!!errors.username}
                     autoFocus
                     autoComplete="off"
                     maxLength={30}
                   />
                   {errors.username && (
-                    <p className="text-xs text-red-500 mt-1">
+                    <p className="text-xs text-destructive mt-1">
                       {errors.username.message}
                     </p>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter password"
-                      {...register("password")}
-                      className={`h-12 text-base border-gray-200 focus:border-[#47d394] focus:ring-[#47d394]/20 transition-all pr-10 ${
-                        errors.password ? "border-red-500" : ""
-                      }`}
-                      autoComplete="off"
-                      maxLength={30}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-5 h-5" />
-                      ) : (
-                        <Eye className="w-5 h-5" />
-                      )}
-                    </button>
-                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    label="Password"
+                    withAsterisk
+                    placeholder="Enter password"
+                    {...register("password")}
+                    aria-invalid={!!errors.password}
+                    autoComplete="off"
+                    maxLength={30}
+                  />
                   {errors.password && (
-                    <p className="text-xs text-red-500 mt-1">
+                    <p className="text-xs text-destructive mt-1">
                       {errors.password.message}
                     </p>
                   )}
@@ -172,7 +152,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 text-base font-bold bg-[#47d394] hover:bg-[#3bb57d] text-white shadow-lg shadow-[#47d394]/25 transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-50 disabled:shadow-none disabled:hover:translate-y-0"
+                  className="w-full"
                   id="login-button"
                 >
                   {isLoading ? (
@@ -192,7 +172,7 @@ export default function LoginPage() {
                   href="https://opentdb.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#47d394] hover:text-[#3bb57d] font-semibold transition-colors"
+                  className="text-primary hover:text-primary-hover font-semibold transition-colors"
                 >
                   Open Trivia Database
                 </a>
