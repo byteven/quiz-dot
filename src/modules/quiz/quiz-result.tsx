@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { useQuiz } from "./contexts/quiz-context";
 import { ResultSummary } from "./components/ResultSummary";
 import { Button } from "@/common/components/ui/button";
-import { RotateCcw, Home } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { QuizLayout } from "./components/QuizLayout";
+import { useAuth } from "../auth/hooks/use-auth";
 
 export default function ResultPage() {
   const { session, phase, resetQuiz } = useQuiz();
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   useEffect(() => {
     if (!session || phase !== "result") {
@@ -24,27 +26,19 @@ export default function ResultPage() {
   if (!session) return null;
 
   return (
-    <QuizLayout rightAction="none">
+    <QuizLayout rightAction="logout" onRightAction={logout}>
       <div id="result-page">
 
         <ResultSummary session={session} />
 
-        <div className="flex flex-col sm:flex-row gap-3 mt-10 max-w-md mx-auto">
+        <div className="flex justify-center mt-12">
           <Button
             onClick={handlePlayAgain} 
-            variant="default"
+            className="w-full sm:w-auto px-8 py-6 rounded-xl font-bold text-lg"
             id="play-again-button"
           >
-            <RotateCcw className="w-5 h-5 mr-2" />
-            Play Again
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/setup")}
-            id="back-setup-button"
-          >
-            <Home className="w-5 h-5 mr-2" />
-            Back to Setup
+            <RotateCcw className="w-5 h-5 mr-3" />
+            Try Again
           </Button>
         </div>
       </div>

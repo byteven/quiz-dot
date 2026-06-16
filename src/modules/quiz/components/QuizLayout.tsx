@@ -39,12 +39,12 @@ export function QuizLayout({ children, titleNode, rightAction = "none", onRightA
           </div>
           
           <div className="flex items-center gap-4">
-            <div className="bg-white/10 border-2 border-white/10 flex items-center gap-3 px-4 rounded-full">
+            <div className="bg-white/20 flex items-center gap-3 px-4 rounded-full">
               <p className="font-medium text-sm md:text-lg pl-2">{user?.username}</p>
               <img 
                 src="/images/fight.png" 
                 alt="Avatar" 
-                className="w-20 h-20 rounded-full -scale-x-100"
+                className="w-15 h-15 rounded-full -scale-x-100"
               />
             </div>
 

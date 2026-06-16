@@ -84,7 +84,7 @@ export function Timer({ timeLeft, progress }: TimerProps) {
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <span
-          className={`font-mono text-lg font-bold tabular-nums ${c.text}`}
+          className={`text-lg font-bold tabular-nums ${c.text}`}
           style={{ transition: "color 0.3s ease" }}
         >
           {minutes > 0

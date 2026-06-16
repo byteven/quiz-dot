@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, type ElementType } from "react";
 import type { QuizSession } from "../types/quiz";
-import { CheckCircle2, XCircle, MinusCircle, Trophy, Target, Zap } from "lucide-react";
+import { CheckCircle2, XCircle, MinusCircle, Trophy, Target, Zap, Clock, Layers, Gauge } from "lucide-react";
 
 interface ResultSummaryProps {
   session: QuizSession;
@@ -24,11 +24,11 @@ export function ResultSummary({ session }: ResultSummaryProps) {
   }, [session]);
 
   const getGrade = (pct: number) => {
-    if (pct >= 90) return { label: "Outstanding!", color: "text-amber-500" };
-    if (pct >= 70) return { label: "Great Job!", color: "text-emerald-500" };
-    if (pct >= 50) return { label: "Good Effort!", color: "text-blue-500" };
-    if (pct >= 30) return { label: "Keep Trying!", color: "text-orange-500" };
-    return { label: "Don't Give Up!", color: "text-red-500" };
+    if (pct >= 90) return { label: "Outstanding!", color: "text-primary" };
+    if (pct >= 70) return { label: "Great Job!", color: "text-primary" };
+    if (pct >= 50) return { label: "Good Effort!", color: "text-secondary" };
+    if (pct >= 30) return { label: "Keep Trying!", color: "text-destructive" };
+    return { label: "Don't Give Up!", color: "text-destructive" };
   };
 
   const grade = getGrade(stats.percentage);
@@ -71,9 +71,8 @@ export function ResultSummary({ session }: ResultSummaryProps) {
             />
             <defs>
               <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#6366f1" />
-                <stop offset="50%" stopColor="#8b5cf6" />
-                <stop offset="100%" stopColor="#a78bfa" />
+                <stop offset="0%" stopColor="var(--primary)" />
+                <stop offset="100%" stopColor="var(--secondary)" />
               </linearGradient>
             </defs>
           </svg>
@@ -83,54 +82,66 @@ export function ResultSummary({ session }: ResultSummaryProps) {
           </div>
         </div>
 
-        <p className="text-muted-foreground">
-          {session.config.categoryName || "Mixed Categories"} · {session.config.difficulty || "Any"} difficulty
-        </p>
+        <div className="flex items-center justify-center gap-4 text-muted-foreground mt-2">
+          <div className="flex items-center gap-2">
+            <Layers className="w-5 h-5 text-foreground/30" />
+            <span className="font-medium text-foreground">{session.config.categoryName || "Mixed Categories"}</span>
+          </div>
+          <span className="text-muted-foreground/30">•</span>
+          <div className="flex items-center gap-2 capitalize">
+            <Gauge className="w-5 h-5 text-foreground/30" />
+            <span className="font-medium text-foreground">{session.config.difficulty || "Any difficulty"}</span>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
           label="Correct"
           value={stats.correct}
-          color="bg-emerald-50 border-emerald-200"
+          className="bg-primary text-primary-foreground"
+          icon={CheckCircle2}
         />
         <StatCard
           label="Wrong"
           value={stats.wrong}
-          color="bg-red-50 border-red-200"
+          className="bg-destructive text-destructive-foreground"
+          icon={XCircle}
         />
         <StatCard
           label="Unanswered"
           value={stats.unanswered}
-          color="bg-gray-50 border-gray-200"
+          className="bg-secondary text-secondary-foreground"
+          icon={MinusCircle}
         />
         <StatCard
           label="Avg Time"
           value={formatTime(stats.avgTime)}
-          color="bg-blue-50 border-blue-200"
+          className="bg-foreground text-background"
+          icon={Clock}
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/60">
-          <Trophy className="w-5 h-5 text-amber-500" />
+        <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/40">
+          <Trophy className="w-6 h-6 text-primary" />
           <div>
-            <p className="text-sm text-muted-foreground">Total Questions</p>
-            <p className="text-lg font-bold">{stats.total}</p>
+            <p className="text-sm font-medium text-muted-foreground">Total Questions</p>
+            <p className="text-xl font-bold text-foreground">{stats.total}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/60">
-          <Target className="w-5 h-5 text-violet-500" />
+        <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/40">
+          <Target className="w-6 h-6 text-secondary" />
           <div>
-            <p className="text-sm text-muted-foreground">Accuracy</p>
-            <p className="text-lg font-bold">{stats.percentage}%</p>
+            <p className="text-sm font-medium text-muted-foreground">Accuracy</p>
+            <p className="text-xl font-bold text-foreground">{stats.percentage}%</p>
           </div>
         </div>
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-card border border-border/60">
-          <Zap className="w-5 h-5 text-yellow-500" />
+        <div className="flex items-center gap-4 p-5 rounded-2xl bg-muted/40">
+          <Zap className="w-6 h-6 text-destructive" />
           <div>
-            <p className="text-sm text-muted-foreground">Total Time</p>
-            <p className="text-lg font-bold">{formatTime(stats.totalTime)}</p>
+            <p className="text-sm font-medium text-muted-foreground">Total Time</p>
+            <p className="text-xl font-bold text-foreground">{formatTime(stats.totalTime)}</p>
           </div>
         </div>
       </div>
@@ -148,38 +159,38 @@ export function ResultSummary({ session }: ResultSummaryProps) {
                 key={q.id}
                 id={`review-question-${i}`}
                 className={`
-                  p-4 rounded-xl border-2 transition-all duration-200
+                  p-5 rounded-2xl transition-all duration-200
                   ${
                     isCorrect
-                      ? "border-emerald-200 bg-emerald-50/50"
+                      ? "bg-primary/10"
                       : isUnanswered
-                      ? "border-gray-200 bg-gray-50/50"
-                      : "border-red-200 bg-red-50/50"
+                      ? "bg-secondary/10"
+                      : "bg-destructive/3"
                   }
                 `}
               >
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-4">
                   <span className="flex-shrink-0 mt-0.5">
                     {isCorrect ? (
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                      <CheckCircle2 className="w-6 h-6 text-primary" />
                     ) : isUnanswered ? (
-                      <MinusCircle className="w-5 h-5 text-gray-400" />
+                      <MinusCircle className="w-6 h-6 text-secondary" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-red-500" />
+                      <XCircle className="w-6 h-6 text-destructive" />
                     )}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-sm text-foreground">
+                    <p className="font-semibold text-base text-foreground leading-relaxed">
                       {i + 1}. {q.question}
                     </p>
-                    <div className="mt-1 space-y-0.5 text-sm">
+                    <div className="mt-2 space-y-1 text-sm">
                       {!isCorrect && answer?.selectedAnswer && (
-                        <p className="text-red-600">
-                          Your answer: <span className="font-medium">{answer.selectedAnswer}</span>
+                        <p className="text-destructive/80">
+                          Your answer: <span className="font-medium text-destructive">{answer.selectedAnswer}</span>
                         </p>
                       )}
-                      <p className="text-emerald-600">
-                        Correct: <span className="font-medium">{q.correctAnswer}</span>
+                      <p className="text-primary/90">
+                        Correct: <span className="font-medium text-primary">{q.correctAnswer}</span>
                       </p>
                     </div>
                   </div>
@@ -196,16 +207,19 @@ export function ResultSummary({ session }: ResultSummaryProps) {
 function StatCard({
   label,
   value,
-  color,
+  className,
+  icon: Icon
 }: {
   label: string;
   value: string | number;
-  color: string;
+  className: string;
+  icon?: ElementType;
 }) {
   return (
-    <div className={`flex flex-col items-center gap-2 p-4 rounded-xl border ${color}`}>
-      <span className="text-2xl font-bold text-foreground">{value}</span>
-      <span className="text-xs text-muted-foreground font-medium">{label}</span>
+    <div className={`relative overflow-hidden flex flex-col items-center justify-center gap-1.5 p-6 rounded-2xl ${className}`}>
+      {Icon && <Icon className="absolute right-[-10%] bottom-[-15%] w-24 h-24 opacity-20 pointer-events-none z-0" />}
+      <span className="relative z-10 text-4xl font-bold leading-none">{value}</span>
+      <span className="relative z-10 text-sm font-medium opacity-90 mt-1">{label}</span>
     </div>
   );
 }

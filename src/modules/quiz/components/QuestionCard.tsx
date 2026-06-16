@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import type { Question } from "../types/quiz";
-import { Badge } from "@/common/components/ui/badge";
 import { Layers } from "lucide-react";
 
 interface QuestionCardProps {
@@ -10,12 +9,6 @@ interface QuestionCardProps {
   onAnswer: (answer: string) => void;
   disabled?: boolean;
 }
-
-const difficultyColors: Record<string, string> = {
-  easy: "bg-emerald-100 text-emerald-600",
-  medium: "bg-amber-100 text-amber-500",
-  hard: "bg-red-100 text-red-500",
-};
 
 const optionLetterStyles = [
   "bg-amber-300 text-amber-900 group-hover:bg-amber-400",
@@ -53,21 +46,13 @@ export function QuestionCard({
           <Layers className="w-5 h-5 text-muted-foreground/50" />
           {question.category}
         </div>
-        <Badge
-          variant="secondary"
-          className={`text-xs px-3 py-1 font-bold capitalize border-0 ${
-            difficultyColors[question.difficulty] ?? ""
-          }`}
-        >
-          {question.difficulty}
-        </Badge>
       </div>
 
       <h2 className="text-xl md:text-2xl font-semibold leading-relaxed text-foreground mb-8">
         {question.question}
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
         {question.answers.map((answer, index) => {
           const isSelected = selectedAnswer === answer;
           return (
@@ -77,21 +62,21 @@ export function QuestionCard({
               onClick={() => handleSelect(answer)}
               disabled={disabled || !!selectedAnswer}
               className={`
-                group relative flex items-center gap-4 w-full p-4 rounded-xl text-left
-                transition-all duration-200 ease-out
+                group relative flex items-center gap-4 md:w-full p-4 rounded-xl text-left
+                transition-all duration-200 ease-in-out
                 border-2 border-dashed
                 ${
                   isSelected
-                    ? "border-primary bg-primary scale-[0.98] text-white"
+                    ? "border-primary bg-primary scale-[1.01] text-white"
                     : "border-border/60 bg-transparent hover:border-primary/40 hover:bg-primary/5"
                 }
-                ${disabled || selectedAnswer ? "cursor-not-allowed opacity-70" : "cursor-pointer"}
+                ${disabled || selectedAnswer ? "cursor-not-allowed" : "cursor-pointer"}
               `}
             >
               <span
                 className={`
-                  flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-lg
-                  font-bold text-sm transition-all duration-200
+                  flex-shrink-0 flex items-center justify-center w-10 h-10 md:w-20 md:h-20 rounded-lg
+                  font-bold text-md md:text-xl transition-all duration-200
                   ${
                     isSelected
                       ? "bg-white text-primary"
