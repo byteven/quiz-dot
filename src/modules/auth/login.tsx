@@ -1,22 +1,14 @@
 import { useState } from "react";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";  
-import { Label } from "@/components/ui/label";
-import { Loader2, Eye, EyeOff } from "lucide-react";
-import { FloatingGraphics } from "@/components/FloatingGraphics";
+import { Button } from "@/common/components/ui/button";
+import { Input } from "@/common/components/ui/input";  
+import { Loader2 } from "lucide-react";
+import { FloatingGraphics } from "@/common/components/FloatingGraphics";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
-const loginSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginFormValues } from "@/modules/auth/schemas/login.schema";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -45,8 +37,9 @@ export default function LoginPage() {
       setTimeout(() => {
         navigate("/setup");
       }, 300);
-    } catch (err: any) {
-      toast.error(err.message || "Failed to login");
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to login";
+      toast.error(message);
       setIsLoading(false);
     }
   };

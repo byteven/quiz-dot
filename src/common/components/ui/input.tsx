@@ -1,7 +1,7 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/common/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/common/components/ui/label";
 
 export interface InputProps extends React.ComponentProps<"input"> {
   startIcon?: React.ElementType;

@@ -1,25 +1,14 @@
 import {
   createContext,
-  useContext,
   useState,
   useCallback,
   useEffect,
   type ReactNode,
 } from "react";
-import { clearQuizSession } from "../modules/quiz/utils/storage";
+import { clearQuizSession } from "@/modules/quiz/utils/storage";
+import type { User, AuthContextType } from "../types/auth";
 
-interface User {
-  username: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType | null>(null);
 const TOKEN_KEY = "accessToken";
 
 function decodeJWTPayload(token: string) {
@@ -35,7 +24,7 @@ function decodeJWTPayload(token: string) {
         .join("")
     );
     return JSON.parse(jsonPayload);
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -52,7 +41,7 @@ function createFakeJWT(username: string) {
     exp: Math.floor(Date.now() / 1000) + 60 * 60,
   };
 
-  const encodeBase64Url = (obj: any) =>
+  const encodeBase64Url = (obj: unknown) =>
     window
       .btoa(JSON.stringify(obj))
       .replace(/\+/g, "-")
@@ -77,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch {
-      // e
+      // silent
     }
     return null;
   });
@@ -128,10 +117,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth(): AuthContextType {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
-  return ctx;
 }
