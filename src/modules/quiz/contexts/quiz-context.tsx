@@ -40,7 +40,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   const [isLoading] = useState(false);
 
   const saved = loadQuizSession();
-  const resumeAvailable = !!saved && !saved.isFinished && saved.username === username;
+  const resumeAvailable = !!saved && !saved.isFinished && saved.username === username && !session;
 
   const persistSession = useCallback((s: QuizSession) => {
     setSession(s);

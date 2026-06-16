@@ -40,7 +40,7 @@ export function ResultSummary({ session }: ResultSummaryProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8" id="result-summary">
+    <div className="w-full max-w-4xl mx-auto space-y-8" id="result-summary">
       <div className="text-center space-y-4">
         <h1 className={`text-3xl md:text-4xl font-bold ${grade.color}`}>
           {grade.label}

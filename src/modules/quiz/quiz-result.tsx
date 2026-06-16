@@ -4,6 +4,7 @@ import { useQuiz } from "./contexts/quiz-context";
 import { ResultSummary } from "./components/ResultSummary";
 import { Button } from "@/common/components/ui/button";
 import { RotateCcw, Home } from "lucide-react";
+import { QuizLayout } from "./components/QuizLayout";
 
 export default function ResultPage() {
   const { session, phase, resetQuiz } = useQuiz();
@@ -23,21 +24,8 @@ export default function ResultPage() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden" id="result-page">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-emerald-500/5 blur-3xl animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-violet-500/5 blur-3xl animate-blob animation-delay-2000" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-6 max-w-3xl">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-              <img src="/images/qd.png" alt="Logo" className="w-6 h-6" />
-            </div>
-            <span className="font-bold text-foreground">QuizDot</span>
-          </div>
-        </div>
+    <QuizLayout rightAction="none">
+      <div id="result-page">
 
         <ResultSummary session={session} />
 
@@ -60,6 +48,6 @@ export default function ResultPage() {
           </Button>
         </div>
       </div>
-    </div>
+    </QuizLayout>
   );
 }

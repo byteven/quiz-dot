@@ -5,8 +5,7 @@ import { useQuizTimer } from "./hooks/useQuizTimer";
 import { QuestionCard } from "./components/QuestionCard";
 import { Timer } from "./components/Timer";
 import { ProgressBar } from "./components/ProgressBar";
-import { Button } from "@/common/components/ui/button";
-import { X } from "lucide-react";
+import { QuizLayout } from "./components/QuizLayout";
 
 export default function QuizSessionModule() {
   const { session, answerQuestion, skipQuestion, finishQuiz, phase } = useQuiz();
@@ -54,32 +53,18 @@ export default function QuizSessionModule() {
   if (!session || !currentQuestion) return null;
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden" id="quiz-page">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full bg-violet-500/5 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-60 h-60 rounded-full bg-blue-500/5 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-6 max-w-3xl">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-primary to-indigo-600 flex items-center justify-center">
-            </div>
-            <span className="font-bold text-foreground">QuizDot</span>
-          </div>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={finishQuiz}
-            className="text-muted-foreground hover:text-destructive"
-            id="quit-quiz-button"
-          >
-            <X className="w-4 h-4 mr-1" />
-            End Quiz
-          </Button>
+    <QuizLayout 
+      rightAction="end" 
+      onRightAction={finishQuiz}
+      titleNode={
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white">
+            Questions
+          </h1>
         </div>
-
+      }
+    >
+      <div id="quiz-page">
         <div className="flex items-center gap-6 mb-8">
           <div className="flex-1">
             <ProgressBar
@@ -104,6 +89,6 @@ export default function QuizSessionModule() {
           />
         </div>
       </div>
-    </div>
+    </QuizLayout>
   );
 }

@@ -9,7 +9,7 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
   return (
     <div className="w-full" id="quiz-progress">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-medium text-muted-foreground">
+        <span className="text-md font-medium text-muted-foreground">
           Question <span className="text-foreground font-semibold">{current}</span> of{" "}
           <span className="text-foreground font-semibold">{total}</span>
         </span>

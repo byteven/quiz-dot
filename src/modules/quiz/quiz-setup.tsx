@@ -4,8 +4,8 @@ import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useQuiz } from "./contexts/quiz-context";
 import { fetchCategories, fetchQuestions } from "./services/opentdb.service";
 import type { OpenTDBCategory, Difficulty, QuizConfig } from "./types/quiz";
-import { Button } from "@/common/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/common/components/ui/card";
+import { QuizLayout } from "./components/QuizLayout";
+import { ResumeQuizBanner } from "./components/ResumeQuizBanner";
 import {
   Select,
   SelectContent,
@@ -21,15 +21,13 @@ import {
   Hash,
   Clock,
   Play,
-  LogOut,
-  RotateCcw,
   Gauge,
 } from "lucide-react";
 
 export default function QuizSetupPage() {
   const { user, logout } = useAuth();
   const username = user?.username;
-  const { startQuiz, resumeAvailable, resumeQuiz } = useQuiz();
+  const { startQuiz } = useQuiz();
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState<OpenTDBCategory[]>([]);
@@ -37,7 +35,7 @@ export default function QuizSetupPage() {
   const [loadingQuiz, setLoadingQuiz] = useState(false);
 
   const [category, setCategory] = useState<string>("0");
-  const [difficulty, setDifficulty] = useState<string>("");
+  const [difficulty, setDifficulty] = useState<string>("any");
   const [amount, setAmount] = useState<string>("10");
   const [timePerQuestion, setTimePerQuestion] = useState<string>("30");
 
@@ -51,11 +49,6 @@ export default function QuizSetupPage() {
       .finally(() => setLoadingCategories(false));
   }, []);
 
-  const handleResume = useCallback(() => {
-    resumeQuiz();
-    navigate("/quiz-session");
-  }, [resumeQuiz, navigate]);
-
   const handleStart = useCallback(async () => {
     setLoadingQuiz(true);
     try {
@@ -68,7 +61,7 @@ export default function QuizSetupPage() {
       const config: QuizConfig = {
         category: catId,
         categoryName: catName,
-        difficulty: (difficulty as Difficulty) || "",
+        difficulty: difficulty === "any" ? "" : (difficulty as Difficulty),
         amount: parseInt(amount),
         timePerQuestion: parseInt(timePerQuestion),
       };
@@ -85,80 +78,42 @@ export default function QuizSetupPage() {
   }, [category, difficulty, amount, timePerQuestion, categories, startQuiz, navigate]);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden" id="quiz-setup-page">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-violet-500/5 blur-3xl animate-blob" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-blue-500/5 blur-3xl animate-blob animation-delay-2000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-indigo-500/3 blur-3xl animate-blob animation-delay-4000" />
-      </div>
-
-      <div className="relative z-10 container mx-auto px-4 py-8 max-w-2xl">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-               <img src="/images/qd.png" alt="Logo" className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-foreground">QuizDot</h1>
-              <p className="text-sm text-muted-foreground">
-                Welcome, <span className="font-medium text-foreground">{username}</span>
-              </p>
-            </div>
+    <QuizLayout 
+      rightAction="logout" 
+      onRightAction={logout}
+      titleNode={
+        <div className="mb-6 text-center flex flex-col items-center">
+          <div className="flex items-center justify-center gap-3">
+            <img
+              src="/images/qd.png"
+              alt="QuizDot Logo"
+              className="w-16 h-16 md:w-20 md:h-20 object-contain rounded-xl"
+            />
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white">
+              Quiz<span className="italic">Dot</span>
+            </h1>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={logout}
-            className="text-muted-foreground hover:text-destructive"
-            id="logout-button"
-          >
-            <LogOut className="w-4 h-4 mr-1.5" />
-            Logout
-          </Button>
+          <p className="text-white mt-2 text-lg font-medium">Let’s set up your quiz, {username}!</p>
+        </div>
+      }
+    >
+      <ResumeQuizBanner />
+
+      <div id="setup-card" className="flex-1 flex flex-col pt-2 md:pt-8">
+        <div className="pb-8 md:pb-12 px-0 w-full max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary">Quiz Setup</h1>
         </div>
 
-        {resumeAvailable && (
-          <Card className="mb-6 border-amber-200 bg-amber-50/50 animate-in fade-in slide-in-from-top-3 duration-300" id="resume-card">
-            <CardContent className="flex items-center justify-between py-4">
-              <div className="flex items-center gap-3">
-                <RotateCcw className="w-5 h-5 text-amber-600" />
-                <div>
-                  <p className="font-medium text-amber-900">Quiz in progress</p>
-                  <p className="text-sm text-amber-700">
-                    You have an unfinished quiz. Continue where you left off?
-                  </p>
-                </div>
-              </div>
-              <Button
-                onClick={handleResume}
-                className="bg-amber-600 hover:bg-amber-700 text-white"
-                id="resume-button"
-              >
-                Resume
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
-        <Card className="shadow-xl border-border/40 bg-card/80 backdrop-blur-sm" id="setup-card">
-          <CardHeader className="pb-2">
-            <div className="flex items-center gap-2">
-              <CardTitle className="text-2xl">Quiz Setup</CardTitle>
-            </div>
-            <p className="text-muted-foreground text-sm mt-1">
-              Configure your quiz and challenge yourself!
-            </p>
-          </CardHeader>
-
-          <CardContent className="space-y-6 pt-4">
-            <div className="space-y-2">
-              <Label htmlFor="category" className="flex items-center gap-2 font-medium">
-                <Layers className="w-4 h-4 text-muted-foreground" />
+        <div className="flex flex-col md:flex-row gap-10 md:gap-16 items-center w-full">
+          <div className="w-full md:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+            <div className="space-y-3 md:space-y-4">
+              <Label htmlFor="category" className="flex items-center gap-2 font-semibold text-base md:text-lg">
+                <Layers className="w-5 h-5 text-primary" />
                 Category
               </Label>
-              <Select value={category} onValueChange={setCategory} disabled={loadingCategories}>
-                <SelectTrigger id="category" className="h-11">
-                  <SelectValue placeholder={loadingCategories ? "Loading..." : "Select category"} />
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger id="category" className="h-14 md:h-16 text-base md:text-lg">
+                  <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="0">Any Category</SelectItem>
@@ -171,13 +126,13 @@ export default function QuizSetupPage() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="difficulty" className="flex items-center gap-2 font-medium">
-                <Gauge className="w-4 h-4 text-muted-foreground" />
+            <div className="space-y-3 md:space-y-4">
+              <Label htmlFor="difficulty" className="flex items-center gap-2 font-semibold text-base md:text-lg">
+                <Gauge className="w-5 h-5 text-primary" />
                 Difficulty
               </Label>
               <Select value={difficulty} onValueChange={setDifficulty}>
-                <SelectTrigger id="difficulty" className="h-11">
+                <SelectTrigger id="difficulty" className="h-14 md:h-16 text-base md:text-lg">
                   <SelectValue placeholder="Select difficulty" />
                 </SelectTrigger>
                 <SelectContent>
@@ -189,13 +144,13 @@ export default function QuizSetupPage() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="amount" className="flex items-center gap-2 font-medium">
-                <Hash className="w-4 h-4 text-muted-foreground" />
+            <div className="space-y-3 md:space-y-4">
+              <Label htmlFor="amount" className="flex items-center gap-2 font-semibold text-base md:text-lg">
+                <Hash className="w-5 h-5 text-primary" />
                 Number of Questions
               </Label>
               <Select value={amount} onValueChange={setAmount}>
-                <SelectTrigger id="amount" className="h-11">
+                <SelectTrigger id="amount" className="h-14 md:h-16 text-base md:text-lg">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -208,13 +163,13 @@ export default function QuizSetupPage() {
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="time" className="flex items-center gap-2 font-medium">
-                <Clock className="w-4 h-4 text-muted-foreground" />
+            <div className="space-y-3 md:space-y-4">
+              <Label htmlFor="time" className="flex items-center gap-2 font-semibold text-base md:text-lg">
+                <Clock className="w-5 h-5 text-primary" />
                 Time per Question
               </Label>
               <Select value={timePerQuestion} onValueChange={setTimePerQuestion}>
-                <SelectTrigger id="time" className="h-11">
+                <SelectTrigger id="time" className="h-14 md:h-16 text-base md:text-lg">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -227,29 +182,40 @@ export default function QuizSetupPage() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
-            <Button
+
+          <div className="w-full md:w-2/5 flex items-center justify-center">
+            <button
               onClick={handleStart}
               disabled={loadingQuiz || loadingCategories}
-              variant="default"
-              className="w-fill"
+              className={`
+                w-56 h-56 md:w-72 md:h-72 rounded-full border-[3px] border-dashed
+                bg-transparent text-primary hover:text-primary hover:border-primary
+                transition-colors duration-300 flex flex-col items-center justify-center gap-4 
+                font-bold text-2xl md:text-3xl cursor-pointer
+                disabled:opacity-50 disabled:cursor-not-allowed
+                focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20
+              `}
               id="start-quiz-button"
             >
               {loadingQuiz ? (
                 <>
-                  <Spinner className="w-5 h-5 mr-2" />
-                  Starting...
+                  <Spinner className="w-10 h-10 md:w-12 md:h-12" />
+                  <span>Hold on...</span>
                 </>
               ) : (
                 <>
-                  <Play className="w-5 h-5 mr-2" />
-                  Start Quiz
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-primary rounded-full flex items-center justify-center text-white mb-2">
+                    <Play className="w-8 h-8 md:w-10 md:h-10 ml-2" fill="currentColor" />
+                  </div>
+                  <span>Start Quiz!</span>
                 </>
               )}
-            </Button>
-          </CardContent>
-        </Card>
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+    </QuizLayout>
   );
 }
