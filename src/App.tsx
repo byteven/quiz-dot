@@ -1,5 +1,5 @@
 import { BrowserRouter, HashRouter } from "react-router-dom";
-import { AuthProvider } from "@/contexts/auth-context";
+import { AuthProvider } from "@/modules/auth/contexts/auth-context";
 import { QuizProvider } from "@/modules/quiz/contexts/quiz-context";
 import Router from "./Router";
 

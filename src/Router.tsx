@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "@/contexts/auth-context";
-import LoginPage from "@/pages/LoginPage";
-import NotFoundPage from "@/pages/NotFoundPage";
-import QuizSetupPage from "@/modules/quiz/pages/QuizSetupPage";
-import QuizPage from "@/modules/quiz/pages/QuizPage";
-import ResultPage from "@/modules/quiz/pages/ResultPage";
+import { useAuth } from "@/modules/auth/hooks/use-auth";
+import LoginPage from "@/pages/auth/login-page";
+import NotFoundPage from "@/pages/error/not-found-page";
+import QuizSetupPage from "@/pages/quiz/quiz-setup-page";
+import QuizSessionPage from "@/pages/quiz/quiz-session-page";
+import ResultPage from "@/pages/quiz/quiz-result-page";
 import type { ReactNode } from "react";
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
@@ -22,7 +22,7 @@ function GuestRoute({ children }: { children: ReactNode }) {
 export default function Router() {
   return (
     <Routes>
-      {/* Guest routes */}
+      {/* Guest */}
       <Route
         path="/"
         element={
@@ -32,9 +32,10 @@ export default function Router() {
         }
       />
 
-      {/* Protected routes */}
+      {/* Protected */}
       <Route
         path="/setup"
+        
         element={
           <ProtectedRoute>
             <QuizSetupPage />
@@ -42,10 +43,10 @@ export default function Router() {
         }
       />
       <Route
-        path="/quiz"
+        path="/quiz-session"
         element={
           <ProtectedRoute>
-            <QuizPage />
+            <QuizSessionPage />
           </ProtectedRoute>
         }
       />

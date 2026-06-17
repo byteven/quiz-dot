@@ -12,25 +12,22 @@
   --card-foreground: oklch(0.145 0.02 240);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0.02 240);
-  --primary: #6366f1;
+  --primary: #47d394;
+  --primary-hover: #3bb57d;
   --content-primary: oklch(35.165% 0.01498 264.389);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.95 0.02 240);
-  --secondary-foreground: oklch(20.364% 0.01936 242.288 / 0.847);
+  --primary-foreground: #ffffff;
+  --secondary: #fe9cde;
+  --secondary-foreground: #ffffff;
   --muted: oklch(97.097% 0.00596 240.377);
   --muted-foreground: oklch(0.52 0.02 240);
   --accent: oklch(98.714% 0.00351 248.588);
   --accent-foreground: oklch(0.145 0.02 240);
   --destructive: #ee2c1e;
   --destructive-foreground: oklch(95.412% 0.02291 13.989);
-  --border: oklch(0.9 0.01 240);
-  --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.62 0.15 250);
-  --chart-1: oklch(0.62 0.15 250);
-  --chart-2: oklch(0.65 0.14 200);
-  --chart-3: oklch(0.55 0.12 260);
-  --chart-4: oklch(0.7 0.13 180);
-  --chart-5: oklch(0.6 0.11 230);
+  --border: #e2e8f0;
+  --border-thin: #f1f5f9;
+  --input: #e2e8f0;
+  --ring: #47d394;
 
   /* Font Families */
   --font-sans: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont,
@@ -78,6 +75,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-content-primary: var(--content-primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
@@ -89,6 +87,7 @@
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
+  --color-border-thin: var(--border-thin);
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-chart-1: var(--chart-1);
@@ -255,12 +254,11 @@
   }
 }
 
-/* Hide Scrollbar */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none; /* Chrome, Safari and Opera */
+  display: none; 
 }
