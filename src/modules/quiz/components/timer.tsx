@@ -1,40 +1,39 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 interface TimerProps {
   timeLeft: number;
-  totalTime: number;
   progress: number;
 }
 
+const URGENCY_COLORS = {
+  normal: {
+    stroke: "#22c55e",
+    text: "text-emerald-600",
+  },
+  warning: {
+    stroke: "#f59e0b",
+    text: "text-amber-500",
+  },
+  critical: {
+    stroke: "#ef4444",
+    text: "text-red-500",
+  },
+} as const;
+
+type Urgency = keyof typeof URGENCY_COLORS;
+
 export function Timer({ timeLeft, progress }: TimerProps) {
+  const ringRef = useRef<SVGSVGElement>(null);
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
-  const urgency = useMemo(() => {
+  const urgency: Urgency = useMemo(() => {
     if (progress <= 0.2) return "critical";
     if (progress <= 0.4) return "warning";
     return "normal";
   }, [progress]);
 
-  const colors = {
-    normal: {
-      stroke: "#22c55e",
-      bg: "rgba(34, 197, 94, 0.1)",
-      text: "text-emerald-600",
-    },
-    warning: {
-      stroke: "#f59e0b",
-      bg: "rgba(245, 158, 11, 0.1)",
-      text: "text-amber-500",
-    },
-    critical: {
-      stroke: "#ef4444",
-      bg: "rgba(239, 68, 68, 0.1)",
-      text: "text-red-500",
-    },
-  };
-
-  const c = colors[urgency];
+  const c = URGENCY_COLORS[urgency];
 
   const size = 80;
   const strokeWidth = 4;
@@ -43,20 +42,23 @@ export function Timer({ timeLeft, progress }: TimerProps) {
   const dashOffset = circumference * (1 - progress);
 
   useEffect(() => {
+    const el = ringRef.current;
+    if (!el) return;
+
     if (urgency === "critical" && timeLeft > 0) {
-      document.getElementById("timer-ring")?.classList.add("animate-pulse");
+      el.classList.add("animate-pulse");
     } else {
-      document.getElementById("timer-ring")?.classList.remove("animate-pulse");
+      el.classList.remove("animate-pulse");
     }
   }, [urgency, timeLeft]);
 
   return (
     <div className="relative inline-flex items-center justify-center" id="quiz-timer">
       <svg
+        ref={ringRef}
         width={size}
         height={size}
         className="transform -rotate-90"
-        id="timer-ring"
       >
         <circle
           cx={size / 2}

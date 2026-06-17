@@ -8,7 +8,7 @@ export default function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background" id="not-found-page">
       <div className="text-center max-w-md px-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary shadow-lg shadow-violet-500/25 mb-6">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary mb-6">
            <img src="/images/qd.png" alt="Logo" />
         </div>
         <h1 className="text-8xl font-bold bg-primary bg-clip-text text-transparent mb-4">

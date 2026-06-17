@@ -4,8 +4,6 @@ import { Layers } from "lucide-react";
 
 interface QuestionCardProps {
   question: Question;
-  questionNumber: number;
-  totalQuestions: number;
   onAnswer: (answer: string) => void;
   disabled?: boolean;
 }

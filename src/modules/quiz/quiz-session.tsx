@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuiz } from "./contexts/quiz-context";
 import { useQuizTimer } from "./hooks/use-quiz-timer";
@@ -74,7 +74,6 @@ export default function QuizSessionModule() {
           </div>
           <Timer
             timeLeft={timeLeft}
-            totalTime={timePerQuestion}
             progress={progress}
           />
         </div>
@@ -83,8 +82,6 @@ export default function QuizSessionModule() {
           <QuestionCard
             key={currentQuestion.id}
             question={currentQuestion}
-            questionNumber={session.currentIndex + 1}
-            totalQuestions={session.questions.length}
             onAnswer={handleAnswer}
           />
         </div>

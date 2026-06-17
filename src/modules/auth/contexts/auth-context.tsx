@@ -5,7 +5,6 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
-import { clearQuizSession } from "@/modules/quiz/utils/storage";
 import type { User, AuthContextType } from "../types/auth";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -85,7 +84,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     sessionStorage.removeItem(TOKEN_KEY);
-    clearQuizSession();
     setUser(null);
   }, []);
 

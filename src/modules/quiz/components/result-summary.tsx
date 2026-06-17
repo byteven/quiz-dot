@@ -6,6 +6,25 @@ interface ResultSummaryProps {
   session: QuizSession;
 }
 
+interface Grade {
+  label: string;
+  color: string;
+}
+
+function getGrade(pct: number): Grade {
+  if (pct >= 90) return { label: "Excellent", color: "text-primary" };
+  if (pct >= 70) return { label: "Very Good", color: "text-primary" };
+  if (pct >= 50) return { label: "Good", color: "text-secondary" };
+  if (pct >= 30) return { label: "Fair", color: "text-destructive" };
+  return { label: "Needs Improvement", color: "text-destructive" };
+}
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.round(seconds % 60);
+  return m > 0 ? `${m}m ${s}s` : `${s}s`;
+}
+
 export function ResultSummary({ session }: ResultSummaryProps) {
   const stats = useMemo(() => {
     const correct = session.answers.filter((a) => a.isCorrect).length;
@@ -23,21 +42,7 @@ export function ResultSummary({ session }: ResultSummaryProps) {
     return { correct, wrong, unanswered, total, percentage, totalTime, avgTime };
   }, [session]);
 
-  const getGrade = (pct: number) => {
-      if (pct >= 90) return { label: "Excellent", color: "text-primary" };
-      if (pct >= 70) return { label: "Very Good", color: "text-primary" };
-      if (pct >= 50) return { label: "Good", color: "text-secondary" };
-      if (pct >= 30) return { label: "Fair", color: "text-destructive" };
-      return { label: "Needs Improvement", color: "text-destructive" };
-    };
-
   const grade = getGrade(stats.percentage);
-
-  const formatTime = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = Math.round(seconds % 60);
-    return m > 0 ? `${m}m ${s}s` : `${s}s`;
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8" id="result-summary">
@@ -204,17 +209,14 @@ export function ResultSummary({ session }: ResultSummaryProps) {
   );
 }
 
-function StatCard({
-  label,
-  value,
-  className,
-  icon: Icon
-}: {
+interface StatCardProps {
   label: string;
   value: string | number;
   className: string;
   icon?: ElementType;
-}) {
+}
+
+function StatCard({ label, value, className, icon: Icon }: StatCardProps) {
   return (
     <div className={`relative overflow-hidden flex flex-col items-center justify-center gap-1.5 p-6 rounded-2xl ${className}`}>
       {Icon && <Icon className="absolute right-[-10%] bottom-[-15%] w-24 h-24 opacity-20 pointer-events-none z-0" />}

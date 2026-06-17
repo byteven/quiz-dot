@@ -4,6 +4,8 @@ import {
   useState,
   useCallback,
   useEffect,
+  useMemo,
+  useRef,
   type ReactNode,
 } from "react";
 import type {
@@ -19,7 +21,6 @@ import { useAuth } from "@/modules/auth/hooks/use-auth";
 interface QuizContextType {
   phase: QuizPhase;
   session: QuizSession | null;
-  isLoading: boolean;
 
   startQuiz: (config: QuizConfig, questions: Question[]) => void;
   answerQuestion: (selectedAnswer: string, timeTaken: number) => void;
@@ -37,10 +38,11 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   const username = user?.username;
   const [session, setSession] = useState<QuizSession | null>(null);
   const [phase, setPhase] = useState<QuizPhase>("setup");
-  const [isLoading] = useState(false);
 
-  const saved = loadQuizSession();
-  const resumeAvailable = !!saved && !saved.isFinished && saved.username === username && !session;
+  const resumeAvailable = useMemo(() => {
+    const saved = loadQuizSession();
+    return !!saved && !saved.isFinished && saved.username === username && !session;
+  }, [username, session]);
 
   const persistSession = useCallback((s: QuizSession) => {
     setSession(s);
@@ -65,15 +67,15 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     [username, persistSession]
   );
 
-  const answerQuestion = useCallback(
-    (selectedAnswer: string, timeTaken: number) => {
+  const recordAnswer = useCallback(
+    (selectedAnswer: string | null, timeTaken: number) => {
       setSession((prev) => {
         if (!prev) return prev;
         const currentQ = prev.questions[prev.currentIndex];
         const answer: UserAnswer = {
           questionId: currentQ.id,
           selectedAnswer,
-          isCorrect: selectedAnswer === currentQ.correctAnswer,
+          isCorrect: selectedAnswer !== null && selectedAnswer === currentQ.correctAnswer,
           timeTaken,
         };
 
@@ -101,40 +103,18 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const answerQuestion = useCallback(
+    (selectedAnswer: string, timeTaken: number) => {
+      recordAnswer(selectedAnswer, timeTaken);
+    },
+    [recordAnswer]
+  );
+
   const skipQuestion = useCallback(
     (timeTaken: number) => {
-      setSession((prev) => {
-        if (!prev) return prev;
-        const currentQ = prev.questions[prev.currentIndex];
-        const answer: UserAnswer = {
-          questionId: currentQ.id,
-          selectedAnswer: null,
-          isCorrect: false,
-          timeTaken,
-        };
-
-        const newAnswers = [...prev.answers, answer];
-        const nextIndex = prev.currentIndex + 1;
-        const isFinished = nextIndex >= prev.questions.length;
-
-        const updated: QuizSession = {
-          ...prev,
-          answers: newAnswers,
-          currentIndex: isFinished ? prev.currentIndex : nextIndex,
-          isFinished,
-          finishedAt: isFinished ? new Date().toISOString() : null,
-        };
-
-        saveQuizSession(updated);
-
-        if (isFinished) {
-          setPhase("result");
-        }
-
-        return updated;
-      });
+      recordAnswer(null, timeTaken);
     },
-    []
+    [recordAnswer]
   );
 
   const finishQuiz = useCallback(() => {
@@ -176,6 +156,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  // Restore finished session from localStorage on mount
   useEffect(() => {
     const saved = loadQuizSession();
     if (saved && saved.username === username) {
@@ -186,12 +167,25 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   }, [username]);
 
+  const prevUserRef = useRef(username);
+  useEffect(() => {
+    const wasLoggedIn = prevUserRef.current !== undefined;
+    const isNowLoggedOut = username === undefined;
+
+    if (wasLoggedIn && isNowLoggedOut) {
+      clearQuizSession();
+      setSession(null);
+      setPhase("setup");
+    }
+
+    prevUserRef.current = username;
+  }, [username]);
+
   return (
     <QuizContext.Provider
       value={{
         phase,
         session,
-        isLoading,
         startQuiz,
         answerQuestion,
         skipQuestion,
