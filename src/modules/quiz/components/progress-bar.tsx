@@ -13,13 +13,10 @@ export function ProgressBar({ current, total }: ProgressBarProps) {
           Question <span className="text-foreground font-semibold">{current}</span> of{" "}
           <span className="text-foreground font-semibold">{total}</span>
         </span>
-        <span className="text-sm font-medium text-muted-foreground">
-          {Math.round(percentage)}%
-        </span>
       </div>
       <div className="h-2 w-full rounded-full bg-muted/50 overflow-hidden">
         <div
-          className="h-full rounded-full transition-all duration-500 ease-out bg-primary"
+          className="h-full rounded-full duration-500 ease-out bg-primary"
           style={{
             width: `${percentage}%`,
           }}

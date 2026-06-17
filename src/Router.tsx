@@ -35,6 +35,7 @@ export default function Router() {
       {/* Protected */}
       <Route
         path="/setup"
+        
         element={
           <ProtectedRoute>
             <QuizSetupPage />

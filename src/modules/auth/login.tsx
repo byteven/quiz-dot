@@ -1,8 +1,8 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/common/components/ui/button";
-import { Input } from "@/common/components/ui/input";  
+import { Input } from "@/common/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { FloatingGraphics } from "@/common/components/floating-graphics";
 import { toast } from "sonner";
@@ -14,7 +14,6 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     register,
@@ -32,11 +31,7 @@ export default function LoginPage() {
     setIsLoading(true);
     try {
       await login(data.username.trim(), data.password);
-      
-      setIsAnimating(true);
-      setTimeout(() => {
-        navigate("/setup");
-      }, 300);
+      navigate("/setup");
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to login";
       toast.error(message);
@@ -47,14 +42,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background" id="login-page">
       <div className="md:w-1/2 bg-primary p-8 md:p-12 flex flex-col text-primary-foreground relative overflow-hidden min-h-[40vh]">
-        <div 
-          className="absolute inset-0 opacity-20 pointer-events-none" 
-          style={{ 
+        <div
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{
             backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E\")",
             backgroundSize: "100px 20px"
           }}
         />
-        
+
         <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
           <div className="absolute top-10 left-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full blur-3xl"></div>
@@ -64,13 +59,13 @@ export default function LoginPage() {
 
         <div className="relative z-10 flex flex-col h-full w-full">
           <div className="flex items-center gap-3">
-            <img 
-              src="/images/qd.png" 
-              alt="QuizDot Logo" 
-              className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-xl" 
+            <img
+              src="/images/qd.png"
+              alt="QuizDot Logo"
+              className="w-12 h-12 md:w-14 md:h-14 object-contain rounded-xl"
             />
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-             Quiz<span className="italic">Dot</span>
+              Quiz<span className="italic">Dot</span>
             </h1>
           </div>
 
@@ -87,9 +82,7 @@ export default function LoginPage() {
 
       <div className="md:w-1/2 flex items-center justify-center p-8 bg-white relative">
         <div
-          className={`w-full max-w-md transition-all duration-300 ${
-            isAnimating ? "scale-95 opacity-0" : "animate-in fade-in slide-in-from-bottom-6 duration-500"
-          }`}
+          className="w-full max-w-md transition-all duration-300"
         >
           <div className="bg-white" id="login-card">
             <div className="text-center pb-2 mt-2">

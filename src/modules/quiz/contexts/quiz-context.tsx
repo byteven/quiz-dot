@@ -156,7 +156,6 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Restore finished session from localStorage on mount
   useEffect(() => {
     const saved = loadQuizSession();
     if (saved && saved.username === username) {

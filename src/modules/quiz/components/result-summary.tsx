@@ -1,22 +1,10 @@
 import { useMemo, type ElementType } from "react";
 import type { QuizSession } from "../types/quiz";
-import { CheckCircle2, XCircle, MinusCircle, Trophy, Target, Zap, Clock, Layers, Gauge } from "lucide-react";
+import { CheckCircle2, XCircle, MinusCircle, Trophy, Target, Zap, Clock } from "lucide-react";
+import { ScoreDisplay } from "./score-display";
 
 interface ResultSummaryProps {
   session: QuizSession;
-}
-
-interface Grade {
-  label: string;
-  color: string;
-}
-
-function getGrade(pct: number): Grade {
-  if (pct >= 90) return { label: "Excellent", color: "text-primary" };
-  if (pct >= 70) return { label: "Very Good", color: "text-primary" };
-  if (pct >= 50) return { label: "Good", color: "text-secondary" };
-  if (pct >= 30) return { label: "Fair", color: "text-destructive" };
-  return { label: "Needs Improvement", color: "text-destructive" };
 }
 
 function formatTime(seconds: number): string {
@@ -42,63 +30,13 @@ export function ResultSummary({ session }: ResultSummaryProps) {
     return { correct, wrong, unanswered, total, percentage, totalTime, avgTime };
   }, [session]);
 
-  const grade = getGrade(stats.percentage);
-
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8" id="result-summary">
-      <div className="text-center space-y-4">
-        <h1 className={`text-3xl md:text-4xl font-bold ${grade.color}`}>
-          {grade.label}
-        </h1>
-
-        <div className="relative inline-flex items-center justify-center my-6">
-          <svg width="160" height="160" className="transform -rotate-90">
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="currentColor"
-              className="text-muted/30"
-              strokeWidth="8"
-            />
-            <circle
-              cx="80"
-              cy="80"
-              r="70"
-              fill="none"
-              stroke="url(#scoreGradient)"
-              strokeWidth="8"
-              strokeLinecap="round"
-              strokeDasharray={2 * Math.PI * 70}
-              strokeDashoffset={2 * Math.PI * 70 * (1 - stats.percentage / 100)}
-              className="transition-all duration-1000 ease-out"
-            />
-            <defs>
-              <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="var(--primary)" />
-                <stop offset="100%" stopColor="var(--secondary)" />
-              </linearGradient>
-            </defs>
-          </svg>
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-4xl font-bold text-foreground">{stats.percentage}%</span>
-            <span className="text-xs text-muted-foreground font-medium">SCORE</span>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-center gap-4 text-muted-foreground mt-2">
-          <div className="flex items-center gap-2">
-            <Layers className="w-5 h-5 text-foreground/30" />
-            <span className="font-medium text-foreground">{session.config.categoryName || "Mixed Categories"}</span>
-          </div>
-          <span className="text-muted-foreground/30">•</span>
-          <div className="flex items-center gap-2 capitalize">
-            <Gauge className="w-5 h-5 text-foreground/30" />
-            <span className="font-medium text-foreground">{session.config.difficulty || "Any difficulty"}</span>
-          </div>
-        </div>
-      </div>
+      <ScoreDisplay
+        percentage={stats.percentage}
+        categoryName={session.config.categoryName}
+        difficulty={session.config.difficulty}
+      />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
@@ -165,17 +103,16 @@ export function ResultSummary({ session }: ResultSummaryProps) {
                 id={`review-question-${i}`}
                 className={`
                   p-5 rounded-2xl transition-all duration-200
-                  ${
-                    isCorrect
-                      ? "bg-primary/10"
-                      : isUnanswered
+                  ${isCorrect
+                    ? "bg-primary/10"
+                    : isUnanswered
                       ? "bg-secondary/10"
                       : "bg-destructive/3"
                   }
                 `}
               >
                 <div className="flex items-start gap-4">
-                  <span className="flex-shrink-0 mt-0.5">
+                  <span className="shrink-0 mt-0.5">
                     {isCorrect ? (
                       <CheckCircle2 className="w-6 h-6 text-primary" />
                     ) : isUnanswered ? (

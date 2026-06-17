@@ -64,8 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           sessionStorage.removeItem(TOKEN_KEY);
         }
       }
-    } catch {
-      // silent
+    } catch (error) {
+      console.warn("Failed to parse token from sessionStorage:", error);
     }
     return null;
   });

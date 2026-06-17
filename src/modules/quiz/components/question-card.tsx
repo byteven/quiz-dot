@@ -38,7 +38,7 @@ export function QuestionCard({
   );
 
   return (
-    <div className="w-full animate-in fade-in slide-in-from-right-5 duration-300" id="question-card">
+    <div className="w-full" id="question-card">
       <div className="flex flex-wrap items-center gap-4 mb-5">
         <div className="flex items-center gap-2 text-foreground font-light text-sm md:text-base">
           <Layers className="w-5 h-5 text-muted-foreground/50" />
@@ -61,39 +61,35 @@ export function QuestionCard({
               disabled={disabled || !!selectedAnswer}
               className={`
                 group relative flex items-center gap-4 md:w-full p-4 rounded-xl text-left
-                transition-all duration-200 ease-in-out
                 border-2 border-dashed
-                ${
-                  isSelected
-                    ? "border-primary bg-primary scale-[1.01] text-white"
-                    : "border-border/60 bg-transparent hover:border-primary/40 hover:bg-primary/5"
+                ${isSelected
+                  ? "border-primary bg-primary text-white"
+                  : "border-border/60 bg-transparent hover:border-primary/40 hover:bg-primary/5"
                 }
                 ${disabled || selectedAnswer ? "cursor-not-allowed" : "cursor-pointer"}
               `}
             >
               <span
                 className={`
-                  flex-shrink-0 flex items-center justify-center w-10 h-10 md:w-20 md:h-20 rounded-lg
-                  font-bold text-md md:text-xl transition-all duration-200
-                  ${
-                    isSelected
-                      ? "bg-white text-primary"
-                      : optionLetterStyles[index]
+                  shrink-0 flex items-center justify-center w-10 h-10 md:w-20 md:h-20 rounded-lg
+                  font-bold text-md md:text-xl
+                  ${isSelected
+                    ? "bg-white text-primary"
+                    : optionLetterStyles[index]
                   }
                 `}
               >
                 {optionLetters[index]}
               </span>
 
-              <span className="flex-1 text-base font-medium">{answer}</span>
+              <span className="flex-1 text-md font-medium">{answer}</span>
 
               <div
                 className={`
-                  flex-shrink-0 w-5 h-5 rounded-full border-2 transition-all duration-200
-                  ${
-                    isSelected
-                      ? "border-white bg-white text-primary"
-                      : "border-muted-foreground/30 group-hover:border-primary/50"
+                  shrink-0 w-5 h-5 rounded-full border-2
+                  ${isSelected
+                    ? "border-white bg-white text-primary"
+                    : "border-muted-foreground/30 group-hover:border-primary/50"
                   }
                 `}
               >

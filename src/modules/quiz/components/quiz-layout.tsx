@@ -15,14 +15,14 @@ export function QuizLayout({ children, titleNode, rightAction = "none", onRightA
 
   return (
     <div className="min-h-screen bg-primary flex flex-col text-primary-foreground relative overflow-hidden" id="quiz-layout">
-      <div 
-        className="absolute top-0 left-0 right-0 h-[50vh] opacity-20 pointer-events-none" 
-        style={{ 
+      <div
+        className="absolute top-0 left-0 right-0 h-[50vh] opacity-20 pointer-events-none"
+        style={{
           backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q 25 20 50 10 T 100 10' fill='none' stroke='%23ffffff' stroke-width='1'/%3E%3C/svg%3E\")",
           backgroundSize: "100px 20px"
         }}
       />
-      
+
       <div className="absolute top-0 left-0 w-full h-[50vh] opacity-20 pointer-events-none">
         <div className="absolute top-10 left-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
         <div className="absolute top-20 right-10 w-60 h-60 bg-white rounded-full blur-3xl"></div>
@@ -31,19 +31,19 @@ export function QuizLayout({ children, titleNode, rightAction = "none", onRightA
       <div className="relative z-20 flex flex-col shrink-0">
         <div className="w-full px-6 md:px-12 py-4 flex items-center justify-between">
           <div className="flex items-center">
-            <img 
-              src="/images/qd.png" 
-              alt="QuizDot Logo" 
-              className="w-16 h-16 object-contain rounded-xl p-1" 
+            <img
+              src="/images/qd.png"
+              alt="QuizDot Logo"
+              className="w-16 h-16 object-contain rounded-xl p-1"
             />
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <div className="bg-white/20 flex items-center gap-3 px-4 rounded-full">
+            <div className="border-2 border-dashed border-white/50 flex items-center gap-3 px-4 rounded-full">
               <p className="font-medium text-sm md:text-lg pl-2">{user?.username}</p>
-              <img 
-                src="/images/fight.png" 
-                alt="Avatar" 
+              <img
+                src="/images/fight.png"
+                alt="Avatar"
                 className="w-15 h-15 rounded-full -scale-x-100"
               />
             </div>
