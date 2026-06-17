@@ -1,10 +1,10 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/common/components/ui/button";
 import { Input } from "@/common/components/ui/input";  
 import { Loader2 } from "lucide-react";
-import { FloatingGraphics } from "@/common/components/FloatingGraphics";
+import { FloatingGraphics } from "@/common/components/floating-graphics";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

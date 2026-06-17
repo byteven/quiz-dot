@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+﻿import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useQuiz } from "./contexts/quiz-context";
 import { fetchCategories, fetchQuestions } from "./services/opentdb.service";
 import type { OpenTDBCategory, Difficulty, QuizConfig } from "./types/quiz";
-import { QuizLayout } from "./components/QuizLayout";
-import { ResumeQuizBanner } from "./components/ResumeQuizBanner";
+import { QuizLayout } from "./components/quiz-layout";
+import { ResumeQuizBanner } from "./components/resume-quiz-banner";
 import {
   Select,
   SelectContent,

@@ -24,12 +24,12 @@ export function ResultSummary({ session }: ResultSummaryProps) {
   }, [session]);
 
   const getGrade = (pct: number) => {
-    if (pct >= 90) return { label: "Outstanding!", color: "text-primary" };
-    if (pct >= 70) return { label: "Great Job!", color: "text-primary" };
-    if (pct >= 50) return { label: "Good Effort!", color: "text-secondary" };
-    if (pct >= 30) return { label: "Keep Trying!", color: "text-destructive" };
-    return { label: "Don't Give Up!", color: "text-destructive" };
-  };
+      if (pct >= 90) return { label: "Excellent", color: "text-primary" };
+      if (pct >= 70) return { label: "Very Good", color: "text-primary" };
+      if (pct >= 50) return { label: "Good", color: "text-secondary" };
+      if (pct >= 30) return { label: "Fair", color: "text-destructive" };
+      return { label: "Needs Improvement", color: "text-destructive" };
+    };
 
   const grade = getGrade(stats.percentage);
 
@@ -186,11 +186,11 @@ export function ResultSummary({ session }: ResultSummaryProps) {
                     <div className="mt-2 space-y-1 text-sm">
                       {!isCorrect && answer?.selectedAnswer && (
                         <p className="text-destructive/80">
-                          Your answer: <span className="font-medium text-destructive">{answer.selectedAnswer}</span>
+                          <span className="font-medium text-destructive italic">{answer.selectedAnswer}</span>
                         </p>
                       )}
                       <p className="text-primary/90">
-                        Correct: <span className="font-medium text-primary">{q.correctAnswer}</span>
+                        <span className="font-medium text-primary">{q.correctAnswer}</span>
                       </p>
                     </div>
                   </div>

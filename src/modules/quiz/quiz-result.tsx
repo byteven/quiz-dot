@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuiz } from "./contexts/quiz-context";
-import { ResultSummary } from "./components/ResultSummary";
+import { ResultSummary } from "./components/result-summary";
 import { Button } from "@/common/components/ui/button";
 import { RotateCcw } from "lucide-react";
-import { QuizLayout } from "./components/QuizLayout";
+import { QuizLayout } from "./components/quiz-layout";
 import { useAuth } from "../auth/hooks/use-auth";
 
 export default function ResultPage() {

@@ -1,11 +1,11 @@
-import { useCallback, useEffect } from "react";
+﻿import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuiz } from "./contexts/quiz-context";
-import { useQuizTimer } from "./hooks/useQuizTimer";
-import { QuestionCard } from "./components/QuestionCard";
-import { Timer } from "./components/Timer";
-import { ProgressBar } from "./components/ProgressBar";
-import { QuizLayout } from "./components/QuizLayout";
+import { useQuizTimer } from "./hooks/use-quiz-timer";
+import { QuestionCard } from "./components/question-card";
+import { Timer } from "./components/timer";
+import { ProgressBar } from "./components/progress-bar";
+import { QuizLayout } from "./components/quiz-layout";
 
 export default function QuizSessionModule() {
   const { session, answerQuestion, skipQuestion, finishQuiz, phase } = useQuiz();
