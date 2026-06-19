@@ -7,7 +7,7 @@ interface TimerProps {
 
 const URGENCY_COLORS = {
   normal: {
-    stroke: "#22c55e",
+    stroke: "var(--primary)",
     text: "text-emerald-600",
   },
   warning: {
