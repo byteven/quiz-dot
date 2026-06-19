@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
+import { cn } from "@/common/lib/utils";
 
 interface TimerProps {
   timeLeft: number;
@@ -86,7 +87,7 @@ export function Timer({ timeLeft, progress }: TimerProps) {
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
         <span
-          className={`text-lg font-bold tabular-nums ${c.text}`}
+          className={cn("text-lg font-bold tabular-nums", c.text)}
           style={{ transition: "color 0.3s ease" }}
         >
           {minutes > 0

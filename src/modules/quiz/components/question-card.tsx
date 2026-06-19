@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { cn } from "@/common/lib/utils";
 import type { Question } from "../types/quiz";
 import { Layers } from "lucide-react";
 
@@ -59,25 +60,19 @@ export function QuestionCard({
               id={`answer-option-${index}`}
               onClick={() => handleSelect(answer)}
               disabled={disabled || !!selectedAnswer}
-              className={`
-                group relative flex items-center gap-4 md:w-full p-4 rounded-xl text-left
-                border-2 border-dashed
-                ${isSelected
+              className={cn(
+                "group relative flex items-center gap-4 md:w-full p-4 rounded-xl text-left border-2 border-dashed",
+                isSelected
                   ? "border-primary bg-primary text-white"
-                  : "border-border/60 bg-transparent hover:border-primary/40 hover:bg-primary/5"
-                }
-                ${disabled || selectedAnswer ? "cursor-not-allowed" : "cursor-pointer"}
-              `}
+                  : "border-border/60 bg-transparent hover:border-primary/40 hover:bg-primary/5",
+                disabled || selectedAnswer ? "cursor-not-allowed" : "cursor-pointer"
+              )}
             >
               <span
-                className={`
-                  shrink-0 flex items-center justify-center w-10 h-10 md:w-20 md:h-20 rounded-lg
-                  font-bold text-md md:text-xl
-                  ${isSelected
-                    ? "bg-white text-primary"
-                    : optionLetterStyles[index]
-                  }
-                `}
+                className={cn(
+                  "shrink-0 flex items-center justify-center w-10 h-10 md:w-20 md:h-20 rounded-lg font-bold text-md md:text-xl",
+                  isSelected ? "bg-white text-primary" : optionLetterStyles[index]
+                )}
               >
                 {optionLetters[index]}
               </span>
@@ -85,13 +80,12 @@ export function QuestionCard({
               <span className="flex-1 text-md font-medium">{answer}</span>
 
               <div
-                className={`
-                  shrink-0 w-5 h-5 rounded-full border-2
-                  ${isSelected
+                className={cn(
+                  "shrink-0 w-5 h-5 rounded-full border-2",
+                  isSelected
                     ? "border-white bg-white text-primary"
                     : "border-muted-foreground/30 group-hover:border-primary/50"
-                  }
-                `}
+                )}
               >
                 {isSelected && (
                   <svg viewBox="0 0 20 20" className="w-full h-full p-0.5 text-primary">

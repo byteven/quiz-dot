@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/modules/auth/hooks/use-auth";
 import { useQuiz } from "./contexts/quiz-context";
@@ -23,6 +23,7 @@ import {
   Play,
   Gauge,
 } from "lucide-react";
+import { cn } from "@/common/lib/utils";
 
 export default function QuizSetupPage() {
   const { user, logout } = useAuth();
@@ -189,14 +190,14 @@ export default function QuizSetupPage() {
             <button
               onClick={handleStart}
               disabled={loadingQuiz || loadingCategories}
-              className={`
-                w-56 h-56 md:w-72 md:h-72 rounded-full border-[3px] border-dashed
-                bg-transparent text-primary hover:text-primary hover:border-primary
-                transition-colors duration-300 flex flex-col items-center justify-center gap-4 
-                font-bold text-2xl md:text-3xl cursor-pointer
-                disabled:opacity-50 disabled:cursor-not-allowed
-                focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20
-              `}
+              className={cn(
+                "w-56 h-56 md:w-72 md:h-72 rounded-full border-[3px] border-dashed",
+                "bg-transparent text-primary hover:text-primary hover:border-primary",
+                "transition-colors duration-300 flex flex-col items-center justify-center gap-4",
+                "font-bold text-2xl md:text-3xl cursor-pointer",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
+                "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/20"
+              )}
               id="start-quiz-button"
             >
               {loadingQuiz ? (

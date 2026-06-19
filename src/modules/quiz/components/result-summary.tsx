@@ -1,4 +1,5 @@
 import { useMemo, type ElementType } from "react";
+import { cn } from "@/common/lib/utils";
 import type { QuizSession } from "../types/quiz";
 import { CheckCircle2, XCircle, MinusCircle, Trophy, Target, Zap, Clock } from "lucide-react";
 import { ScoreDisplay } from "./score-display";
@@ -101,15 +102,14 @@ export function ResultSummary({ session }: ResultSummaryProps) {
               <div
                 key={q.id}
                 id={`review-question-${i}`}
-                className={`
-                  p-5 rounded-2xl transition-all duration-200
-                  ${isCorrect
+                className={cn(
+                  "p-5 rounded-2xl transition-all duration-200",
+                  isCorrect
                     ? "bg-primary/10"
                     : isUnanswered
                       ? "bg-secondary/10"
                       : "bg-destructive/3"
-                  }
-                `}
+                )}
               >
                 <div className="flex items-start gap-4">
                   <span className="shrink-0 mt-0.5">
@@ -155,7 +155,7 @@ interface StatCardProps {
 
 function StatCard({ label, value, className, icon: Icon }: StatCardProps) {
   return (
-    <div className={`relative overflow-hidden flex flex-col items-center justify-center gap-1.5 p-6 rounded-2xl ${className}`}>
+    <div className={cn("relative overflow-hidden flex flex-col items-center justify-center gap-1.5 p-6 rounded-2xl", className)}>
       {Icon && <Icon className="absolute right-[-10%] bottom-[-15%] w-24 h-24 opacity-20 pointer-events-none z-0" />}
       <span className="relative z-10 text-4xl font-bold leading-none">{value}</span>
       <span className="relative z-10 text-sm font-medium opacity-90 mt-1">{label}</span>
