@@ -71,7 +71,15 @@ export function QuizProvider({ children }: { children: ReactNode }) {
     (selectedAnswer: string | null, timeTaken: number) => {
       setSession((prev) => {
         if (!prev) return prev;
+
         const currentQ = prev.questions[prev.currentIndex];
+        if (!currentQ) return prev;
+
+        const alreadyAnswered = prev.answers.some(
+          (a) => a.questionId === currentQ.id
+        );
+        if (alreadyAnswered) return prev;
+
         const answer: UserAnswer = {
           questionId: currentQ.id,
           selectedAnswer,
@@ -120,6 +128,7 @@ export function QuizProvider({ children }: { children: ReactNode }) {
   const finishQuiz = useCallback(() => {
     setSession((prev) => {
       if (!prev) return prev;
+      if (prev.isFinished) return prev;
 
       const remaining = prev.questions.slice(prev.answers.length);
       const unanswered: UserAnswer[] = remaining.map((q) => ({
