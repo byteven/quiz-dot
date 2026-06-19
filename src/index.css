@@ -6,24 +6,24 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(99.31% 0.00351 248.593);
-  --foreground: oklch(14.504% 0.02027 244.358 / 0.854);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0.02 240);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0.02 240);
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
   --primary: #21c4a9;
   --primary-hover: #1cbea3;
-  --content-primary: oklch(35.165% 0.01498 264.389);
+  --content-primary: #334155;
   --primary-foreground: #ffffff;
   --secondary: #fe9cde;
   --secondary-foreground: #ffffff;
-  --muted: oklch(97.097% 0.00596 240.377);
-  --muted-foreground: oklch(0.52 0.02 240);
-  --accent: oklch(98.714% 0.00351 248.588);
-  --accent-foreground: oklch(0.145 0.02 240);
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f8fafc;
+  --accent-foreground: #0f172a;
   --destructive: #ee2c1e;
-  --destructive-foreground: oklch(95.412% 0.02291 13.989);
+  --destructive-foreground: #fef2f2;
   --border: #e2e8f0;
   --border-thin: #f1f5f9;
   --input: #e2e8f0;
